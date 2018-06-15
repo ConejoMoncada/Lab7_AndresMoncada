@@ -6,6 +6,7 @@
 package lab7_andresmoncada;
 
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -33,11 +34,11 @@ public class Main extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         tf_carro = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        tree = new javax.swing.JTree();
         cb_carros = new javax.swing.JComboBox<>();
         addCarro = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        ensamblar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         tf_pieza = new javax.swing.JTextField();
         jSpinner1 = new javax.swing.JSpinner();
@@ -54,18 +55,29 @@ public class Main extends javax.swing.JFrame {
         jLabel2.setText("Nombre del carro");
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Carro");
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jScrollPane1.setViewportView(jTree1);
+        tree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jScrollPane1.setViewportView(tree);
 
         cb_carros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Carros" }));
         cb_carros.setEnabled(false);
+        cb_carros.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_carrosItemStateChanged(evt);
+            }
+        });
 
         addCarro.setText("Agregar");
+        addCarro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addCarroActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Agregar Pieza");
 
-        jButton2.setText("Ensamblar");
+        ensamblar.setText("Ensamblar");
+        ensamblar.setEnabled(false);
 
         jLabel4.setText("Nombre de la pieza");
 
@@ -87,7 +99,7 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(ensamblar)
                 .addGap(86, 86, 86))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,12 +173,32 @@ public class Main extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(ensamblar)
                 .addGap(0, 35, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCarroActionPerformed
+        carros.add(new Carro(tf_carro.getText()));
+        DefaultComboBoxModel cm = new DefaultComboBoxModel(carros.toArray());
+        cb_carros.setEnabled(true);
+        cb_carros.setModel(cm);
+        addCarro.setEnabled(true);
+        ensamblar.setEnabled(true);
+        addPieza.setEnabled(true);
+        tree.setModel(carros.get(carros.size()-1).getModel());
+    }//GEN-LAST:event_addCarroActionPerformed
+
+    private void cb_carrosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_carrosItemStateChanged
+        if (evt.getStateChange() == 1){
+             Carro temp = (Carro) cb_carros.getSelectedItem();
+            if(temp != null){
+                tree.setModel(temp.getModel());
+            }
+        }
+    }//GEN-LAST:event_cb_carrosItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -207,7 +239,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton addCarro;
     private javax.swing.JButton addPieza;
     private javax.swing.JComboBox<String> cb_carros;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton ensamblar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -217,9 +249,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTree jTree1;
     private javax.swing.JTextField tf_carro;
     private javax.swing.JTextField tf_pieza;
+    private javax.swing.JTree tree;
     // End of variables declaration//GEN-END:variables
     ArrayList<Carro> carros = new ArrayList();
 }
