@@ -97,6 +97,11 @@ public class Main extends javax.swing.JFrame {
 
         ensamblar.setText("Ensamblar");
         ensamblar.setEnabled(false);
+        ensamblar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ensamblarActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Nombre de la pieza");
 
@@ -272,9 +277,34 @@ public class Main extends javax.swing.JFrame {
                 
             }
         }else
-            JOptionPane.showMessageDialog(this, "Seleccione una pieza o carro para\n"+"agregarle esta pieza");
+            JOptionPane.showMessageDialog(this, "Seleccione una pieza o carro en el arbol\n"+"para agregarle esta pieza");
     }//GEN-LAST:event_addPiezaActionPerformed
 
+    private void ensamblarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ensamblarActionPerformed
+        elementos = new ArrayList();
+        llenarlista((DefaultMutableTreeNode)tree.getModel().getRoot());
+        LaTabla tb = new LaTabla(this, false, elementos);
+        
+    }//GEN-LAST:event_ensamblarActionPerformed
+
+    public void llenarlista(DefaultMutableTreeNode n){
+        for (int i = 0; i < n.getChildCount(); i++) {
+            if(n.getChildAt(i).getChildCount() == 0){
+                elementos.add(new Elemento(
+                tree.getModel().getRoot().toString(),
+                n.getChildAt(i).toString(),
+                ((Pieza)n.getChildAt(i)).getTiempo()));
+            }else{
+                llenarlista((DefaultMutableTreeNode)n.getChildAt(i));
+            }
+        }
+        if(!n.equals(tree.getModel().getRoot())){
+            elementos.add(new Elemento(
+            tree.getModel().getRoot().toString(),
+            n.toString(),
+            ((Pieza)n.getUserObject()).getTiempo()));
+        }//para no agregar la raiz
+    }
     /**
      * @param args the command line arguments
      */
@@ -332,4 +362,5 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTree tree;
     // End of variables declaration//GEN-END:variables
     ArrayList<Carro> carros = new ArrayList();
+    ArrayList<Elemento> elementos = new ArrayList();//para ordenar el arbol 
 }
