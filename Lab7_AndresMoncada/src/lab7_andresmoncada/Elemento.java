@@ -13,11 +13,15 @@ public class Elemento {
     private String carro;
     private String pieza;
     private int tiempo;
+    private Object[] row = new Object[3];
 
     public Elemento(String carro, String pieza, int tiempo) {
         this.carro = carro;
         this.pieza = pieza;
         this.tiempo = tiempo;
+        row[0] = carro;
+        row[1] = pieza;
+        row[2] = tiempo;
     }
 
     public String getCarro() {
@@ -43,5 +47,7 @@ public class Elemento {
     public void setTiempo(int tiempo) {
         this.tiempo = tiempo;
     }
-    
+    public Object[] getRow(){
+        return row;
+    }
 }

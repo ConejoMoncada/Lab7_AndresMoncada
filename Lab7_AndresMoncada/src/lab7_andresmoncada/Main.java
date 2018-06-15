@@ -226,6 +226,7 @@ public class Main extends javax.swing.JFrame {
         DefaultComboBoxModel cm = new DefaultComboBoxModel(carros.toArray());
         cb_carros.setEnabled(true);
         cb_carros.setModel(cm);
+        cb_carros.setSelectedIndex(cb_carros.getItemCount()-1);
         addCarro.setEnabled(true);
         ensamblar.setEnabled(true);
         addPieza.setEnabled(true);
@@ -284,7 +285,9 @@ public class Main extends javax.swing.JFrame {
         elementos = new ArrayList();
         llenarlista((DefaultMutableTreeNode)tree.getModel().getRoot());
         LaTabla tb = new LaTabla(this, false, elementos);
-        
+        tb.setVisible(true);
+        Thread t = new Thread(tb);
+        t.start();
     }//GEN-LAST:event_ensamblarActionPerformed
 
     public void llenarlista(DefaultMutableTreeNode n){
@@ -293,7 +296,7 @@ public class Main extends javax.swing.JFrame {
                 elementos.add(new Elemento(
                 tree.getModel().getRoot().toString(),
                 n.getChildAt(i).toString(),
-                ((Pieza)n.getChildAt(i)).getTiempo()));
+                ((Pieza)((DefaultMutableTreeNode)n.getChildAt(i)).getUserObject()).getTiempo()));
             }else{
                 llenarlista((DefaultMutableTreeNode)n.getChildAt(i));
             }

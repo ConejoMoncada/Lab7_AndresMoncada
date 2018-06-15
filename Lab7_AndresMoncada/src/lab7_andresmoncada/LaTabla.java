@@ -6,6 +6,10 @@
 package lab7_andresmoncada;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -33,11 +37,11 @@ public class LaTabla extends javax.swing.JDialog implements Runnable{
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -53,7 +57,7 @@ public class LaTabla extends javax.swing.JDialog implements Runnable{
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabla);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,7 +110,7 @@ public class LaTabla extends javax.swing.JDialog implements Runnable{
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                LaTabla dialog = new LaTabla(new javax.swing.JFrame(), true, (DefaultTreeModel)tmodelo);
+                LaTabla dialog = new LaTabla(new javax.swing.JFrame(), true, elementos);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -120,15 +124,25 @@ public class LaTabla extends javax.swing.JDialog implements Runnable{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
-    private ArrayList<Elemento> elementos = new ArrayList();
+    private static ArrayList<Elemento> elementos = new ArrayList();
+    private boolean cont = true;
     
-    public void addTabla(){
-        
-    }
     @Override
     public void run() {
-        addTabla();
+        if(cont){
+            DefaultTableModel tmod = (DefaultTableModel)tabla.getModel();
+            for (int i = 0; i < elementos.size(); i++) {
+                try {
+                    Thread.sleep(1000*elementos.get(i).getTiempo());
+                } catch (InterruptedException ex) {
+                }
+                tmod.addRow(elementos.get(i).getRow());
+            }
+            tabla.setModel(tmod);
+            cont = false;
+            JOptionPane.showMessageDialog(this, elementos.get(0).getCarro() + " ensamblado");
+        }
     }
 }
